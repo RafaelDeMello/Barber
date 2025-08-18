@@ -6,9 +6,11 @@ import Image from "next/image"
 import { CardContent } from "./_components/ui/card"
 import { Card } from "./_components/ui/card"
 import { Badge } from "./_components/ui/badge"
-import { Avatar, AvatarImage, AvatarFallback } from "./_components/ui/avatar"
+import { Avatar, AvatarImage, } from "./_components/ui/avatar"
 
 const Home = () => {
+  // Chamar Banco de dados
+
   return (
     <div>
       {/* Header */}
@@ -37,7 +39,9 @@ const Home = () => {
         </div>
 
         {/* Agendamentos */}
-        <Card className="mt-6">
+        <h2 className="uppercase font-bold text-xs text-gray-400 mt-6 mb-3">Agendamentos</h2>
+
+        <Card className="">
           <CardContent className="flex justify-between p-0">
             {/* Esquerda */}
             <div className="flex flex-col gap-2 py-5 pl-5">
