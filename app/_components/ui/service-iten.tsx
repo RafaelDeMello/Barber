@@ -9,7 +9,7 @@ interface ServiceItemProps {
 
 const ServiceItem = ({ service }: ServiceItemProps) => {
   return (
-    <Card>
+    <Card className="relative min-w[159px] rounded-2xl">
       <CardContent className="flex items-center gap-3 p-3">
         {/* Image */}
         <div className="max-h[110px] max-w[110px] relative h-[110px] w-[110px]">
@@ -34,7 +34,7 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
               }).format(Number(service.price))}
             </p>
 
-            <Button variant="secondary" size="sm">
+            <Button variant="secondary" className="absolute right-4 top-20">
               Reservar
             </Button>
           </div>

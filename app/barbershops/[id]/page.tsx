@@ -1,4 +1,5 @@
 import { Button } from "@/_components/ui/button"
+import PhoneItem from "@/_components/ui/phone-item"
 import ServiceItem from "@/_components/ui/service-iten"
 import { db } from "@/_lib/prisma"
 import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
@@ -49,6 +50,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
           <MenuIcon />
         </Button>
       </div>
+       
+       {/* Titulo */}
 
       <div className="border-b border-solid p-5">
         <h1 className="mb-3 text-xl font-bold">{barbershop?.name}</h1>
@@ -74,7 +77,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       </div>
 
       {/* Serviços */}
-      <div className="p-5 space-y-3">
+      <div className="p-5 space-y-3 border-b border-solid">
         <h2 className="text-xs font-bold uppercase text-gray-400 mb-3">Serviços</h2>
         <div className="space-y-3">
           {barbershop?.services.map((service) => (
@@ -82,7 +85,15 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
           ))}
         </div>
       </div>
+
+      {/* Contato */}
+      <div className="p-5 space-y-3">
+          {barbershop?.phones.map(phone => (
+            <PhoneItem key={phone} phone={ phone } />
+          ))}
+      </div>
     </div>
+    
   )
 }
 
