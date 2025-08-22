@@ -1,12 +1,11 @@
-
 import { Button } from "./_components/ui/button"
 import Header from "./_components/ui/header"
 import Image from "next/image"
 import { db } from "./_lib/prisma"
 import BarbershopItems from "./_components/ui/barbershop-itens"
 import BookingItems from "./_components/ui/booking-itens"
-import { quickSearchOptions } from "./_constants/search"  
-import Search from "./_components/search"
+import { quickSearchOptions } from "./_constants/search"
+import Search from "./_components/ui/search"
 
 const Home = async () => {
   // Chamar Banco de dados
@@ -26,10 +25,10 @@ const Home = async () => {
         <p>Segunda feira, 18 de agosto. </p>
 
         {/* Busca */}
-       
-         <div className="mt-6">
-           <Search />
-         </div>
+
+        <div className="mt-6">
+          <Search />
+        </div>
 
         {/* BUSCA RAPIDA */}
 

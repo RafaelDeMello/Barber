@@ -1,14 +1,14 @@
 "use client"
 
 import { SearchIcon } from "lucide-react"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
+import { Button } from "./button"
+import { Input } from "./input"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { z } from "zod"
 import { useForm } from "react-hook-form"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./form"
 
 const formSchema = z.object({
   title: z.string().trim().min(1, {
