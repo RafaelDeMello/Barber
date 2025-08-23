@@ -2,6 +2,7 @@ import { BarbershopService } from "@prisma/client"
 import Image from "next/image"
 import { Button } from "./button"
 import { Card, CardContent } from "./card"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./sheet"
 
 interface ServiceItemProps {
   service: BarbershopService
@@ -9,7 +10,7 @@ interface ServiceItemProps {
 
 const ServiceItem = ({ service }: ServiceItemProps) => {
   return (
-    <Card className="relative min-w[159px] rounded-2xl">
+    <Card className="min-w[159px] relative rounded-2xl">
       <CardContent className="flex items-center gap-3 p-3">
         {/* Image */}
         <div className="max-h[110px] max-w[110px] relative h-[110px] w-[110px]">
@@ -17,7 +18,7 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
             alt={service.name}
             src={service.imageUrl}
             fill
-            className="object-cover rounded-xl"
+            className="rounded-xl object-cover"
           />
           1
         </div>
@@ -34,9 +35,20 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
               }).format(Number(service.price))}
             </p>
 
-            <Button variant="secondary" className="absolute right-4 top-20">
-              Reservar
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="secondary" className="absolute right-4 top-20">
+                  Reservar
+                </Button>
+              </SheetTrigger>
+            <SheetContent className="px-0">
+              <SheetHeader>
+                <SheetTitle>
+                  Fazer reserva
+                </SheetTitle>
+              </SheetHeader>
+            </SheetContent>
+            </Sheet>
           </div>
         </div>
       </CardContent>
