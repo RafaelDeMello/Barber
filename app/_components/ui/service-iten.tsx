@@ -15,7 +15,9 @@ import {
 import { Calendar } from "./calendar"
 import { ptBR } from "date-fns/locale"
 import { useState } from "react"
-import { format } from "date-fns"
+import { format, set } from "date-fns"
+import { createBooking } from "@/_actions/create-booking"
+import { toast } from "sonner"
 
 interface ServiceItemProps {
   service: BarbershopService
@@ -59,6 +61,28 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 
   const handleTimeSelect = (time: string | undefined) => {
     setSelectedTime(time)
+  }
+
+  const handleCreateBooking = async () => {
+    try {
+      if (!selectedDay) return;
+
+    const hour = Number(selectedTime?.split(":")[0])
+    const minute = Number(selectedTime?.split(":")[1])
+    const newDate = set(selectedDay, {
+      minutes: minute,
+      hours: hour
+    })
+    await createBooking({
+      serviceId: service.id,
+      userId: "0b903ee2-7c8d-47a1-8da9-eaabaf76bfd3",
+      date: newDate, 
+    })
+    toast.success("Reserva criada com sucesso")
+    } catch (error) {
+      console.log(error)
+      toast.error("Erro ao criar reserva")
+    }
   }
 
   return (
@@ -179,9 +203,9 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                     </Card>
                   </div>
                 )}
-                <SheetFooter className="px-5">
+                <SheetFooter className="p-5">
                   <SheetClose asChild>
-                    <Button type="submit">Confirmar</Button>
+                    <Button onClick={handleCreateBooking} >Confirmar</Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>
