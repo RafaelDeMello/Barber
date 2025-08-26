@@ -18,6 +18,7 @@ import { useState } from "react"
 import { format, set } from "date-fns"
 import { createBooking } from "@/_actions/create-booking"
 import { toast } from "sonner"
+import { useSession } from "next-auth/react"
 
 interface ServiceItemProps {
   service: BarbershopService
@@ -50,6 +51,7 @@ const TIME_LIST = [
 ]
 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
+  const { data } = useSession()
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
     undefined,
@@ -64,6 +66,8 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   }
 
   const handleCreateBooking = async () => {
+    // 1. Nao exibir horários que ja foram agendados
+    // 2. Nao deixar o usario reservar se nao estiver logado
     try {
       if (!selectedDay) return;
 
@@ -75,7 +79,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     })
     await createBooking({
       serviceId: service.id,
-      userId: "0b903ee2-7c8d-47a1-8da9-eaabaf76bfd3",
+      userId: (data?.user as any).id,
       date: newDate, 
     })
     toast.success("Reserva criada com sucesso")
@@ -203,9 +207,9 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                     </Card>
                   </div>
                 )}
-                <SheetFooter className="p-5">
+                <SheetFooter className="mt-5 p-5">
                   <SheetClose asChild>
-                    <Button onClick={handleCreateBooking} >Confirmar</Button>
+                    <Button onClick={handleCreateBooking} disabled={!selectedDay || !selectedTime}>Confirmar</Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>
