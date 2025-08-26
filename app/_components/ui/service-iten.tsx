@@ -13,11 +13,14 @@ import {
 import { Calendar } from "./calendar"
 import { ptBR } from "date-fns/locale"
 import { useEffect, useState } from "react"
-import { addDays, format, set } from "date-fns"
+import { format, set } from "date-fns"
 import { createBooking } from "@/_actions/create-booking"
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
 import { getBookings } from "@/_actions/get-bookings"
+import { Dialog, DialogContent } from "./dialog"
+import { sign, Sign } from "crypto"
+import SignInDialog from "./sign-in-dialog"
 
 interface ServiceItemProps {
   service: BarbershopService
@@ -65,6 +68,7 @@ const getTimeList = (bookings: Booking[]) => {
    })
 } 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
+  const [signInDialogIsOpen, setSignInDialogIsOpen] = useState(false)
   const { data } = useSession()
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
@@ -83,6 +87,13 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     }
     fetch()
   }, [selectedDay, service.id])
+
+  const handleBookingClick = () => {
+    if (data?.user) {
+      return setBookingsSheetIsOpen(true)
+    }
+    return setSignInDialogIsOpen(true)
+  }
 
   const handleBookingSheetOpenChange = () => {
     setSelectedDay(undefined)
@@ -123,6 +134,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   }
 
   return (
+    <>
     <Card className="min-w[159px] relative rounded-2xl">
       <CardContent className="flex items-center gap-3 p-3">
         {/* Image */}
@@ -150,7 +162,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 
             <Sheet open={bookingsSheetIsOpen} onOpenChange={handleBookingSheetOpenChange}>
               
-                <Button variant="secondary" className="absolute right-4 top-20" onClick={() => setBookingsSheetIsOpen(true)}>
+                <Button variant="secondary" className="absolute right-4 top-20" onClick={handleBookingClick}>
                   Reservar
                 </Button>
             
@@ -165,7 +177,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                     locale={ptBR}
                     selected={selectedDay}
                     onSelect={handleDateSelect}
-                    fromDate={addDays(new Date(), 1)}
+                    fromDate={new Date()}
                     styles={{
                       head_cell: {
                         width: "100%",
@@ -252,6 +264,15 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         </div>
       </CardContent>
     </Card>
+
+
+
+     <Dialog open={signInDialogIsOpen} onOpenChange={(open) => setSignInDialogIsOpen(open)}>
+       <DialogContent className="w-[90%]">
+          <SignInDialog />
+       </DialogContent>
+     </Dialog>
+    </>
   )
 }
 
