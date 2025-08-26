@@ -19,7 +19,6 @@ import { toast } from "sonner"
 import { useSession } from "next-auth/react"
 import { getBookings } from "@/_actions/get-bookings"
 import { Dialog, DialogContent } from "./dialog"
-import { sign, Sign } from "crypto"
 import SignInDialog from "./sign-in-dialog"
 
 interface ServiceItemProps {
@@ -122,7 +121,6 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       })
       await createBooking({
         serviceId: service.id,
-        userId: (data?.user as any).id,
         date: newDate,
       })
       handleBookingSheetOpenChange()

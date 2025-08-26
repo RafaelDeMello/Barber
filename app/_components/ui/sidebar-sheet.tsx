@@ -12,12 +12,11 @@ import {
   DialogContent,
   DialogTrigger,
 } from "./dialog"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import SignInDialog from "./sign-in-dialog"
 
 const SidebarSheet = () => {
   const { data } = useSession()
-  const handleLoginWithGoogleClick = () => signIn("google")
   const handleLogOutClick = () => signOut()
 
   return (
@@ -88,12 +87,14 @@ const SidebarSheet = () => {
           </SheetClose>
         ))}
       </div>
-      <div className="flex flex-col gap-2 py-5">
+      {data?.user && (
+        <div className="flex flex-col gap-2 py-5">
         <Button variant="ghost" className="justify-start gap-2" onClick={handleLogOutClick}>
           <LogOutIcon size={18} />
           Sair da conta
         </Button>
       </div>
+      )}
     </SheetContent>
   )
 }
