@@ -10,6 +10,8 @@ import Search from "./_components/ui/search"
 import Link from "next/link"
 import { authOptions } from "./_lib/auth"
 import { getServerSession } from "next-auth"
+import { ptBR, se } from "date-fns/locale"
+import { format } from "date-fns"
 
 const Home = async () => {
   const session = await getServerSession(authOptions)
@@ -44,8 +46,18 @@ const confirmedBookings = session?.user ? await db.booking.findMany({
       <Header />
       <div className="p-5">
         {/* Texto */}
-        <h2 className="text-xl font-bold">Olá, Rafael!</h2>
-        <p>Segunda feira, 18 de agosto. </p>
+        <h2 className="text-xl font-bold">
+          Olá, {session?.user ? session.user.name : "bem vindo"}!
+        </h2>
+        <p>
+          <span className="capitalize">
+            {format(new Date(), "EEEE, dd", { locale: ptBR })}
+          </span>
+          <span>&nbsp;de&nbsp;</span>
+          <span className="capitalize">
+            {format(new Date(), "MMMM", { locale: ptBR })}
+          </span>
+        </p>
 
         {/* Busca */}
 
