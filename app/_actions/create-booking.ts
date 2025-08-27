@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 
 import { authOptions } from "@/_lib/auth";
@@ -19,4 +20,5 @@ export const createBooking = async (params: CreateBookingParams) => {
         data: {...params, userId: (user.user as any).id}
      })  
      revalidatePath("/barbershops/[id]")
+     revalidatePath("/bookings")
 }
