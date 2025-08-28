@@ -10,7 +10,7 @@ import Search from "./_components/ui/search"
 import Link from "next/link"
 import { authOptions } from "./_lib/auth"
 import { getServerSession } from "next-auth"
-import { ptBR, se } from "date-fns/locale"
+import { ptBR } from "date-fns/locale"
 import { format } from "date-fns"
 
 const Home = async () => {
