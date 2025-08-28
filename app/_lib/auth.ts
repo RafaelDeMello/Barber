@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { AuthOptions } from "next-auth"
 import { db } from "./prisma"
@@ -20,6 +21,7 @@ export const authOptions:AuthOptions = {
           } as any
           return session
         },
-      }
+      },
+      secret: process.env.NEXT_AUTH_SECRET,
 }
 
