@@ -21,24 +21,26 @@ const Home = async () => {
       name: "desc",
     },
   })
-const confirmedBookings = session?.user ? await db.booking.findMany({
-  where: {
-    userId: (session.user as any).id,
-    date: {
-      gte: new Date(),
-    },
-  },
-  include: {
-    service: {
-      include: {
-        barbershop: true
-      }
-    }
-  },
-  orderBy: {
-     date: "asc"
-  }
-}) : []
+  const confirmedBookings = session?.user
+    ? await db.booking.findMany({
+        where: {
+          userId: (session.user as any).id,
+          date: {
+            gte: new Date(),
+          },
+        },
+        include: {
+          service: {
+            include: {
+              barbershop: true,
+            },
+          },
+        },
+        orderBy: {
+          date: "asc",
+        },
+      })
+    : []
 
   return (
     <div>
@@ -69,16 +71,22 @@ const confirmedBookings = session?.user ? await db.booking.findMany({
 
         <div className="mb-6 mt-6 flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
           {quickSearchOptions.map((option) => (
-              <Button key={option.title} className="gap-2" variant="secondary" asChild>
-                <Link href={`/barbershops?service=${option.title}`}>
+            <Button
+              key={option.title}
+              className="gap-2"
+              variant="secondary"
+              asChild
+            >
+              <Link href={`/barbershops?service=${option.title}`}>
                 <Image
                   src={option.imageUrl}
                   alt={option.title}
                   width={16}
                   height={16}
                 />
-                {option.title} </Link>
-              </Button>
+                {option.title}{" "}
+              </Link>
+            </Button>
           ))}
         </div>
         {/* Imagem */}
@@ -91,16 +99,21 @@ const confirmedBookings = session?.user ? await db.booking.findMany({
           />
         </div>
 
-        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Agendamentos
-        </h2>
-
+        {confirmedBookings.length > 0 && (
+          <>
+            <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+              Agendamentos
+            </h2>
+            {/* Agendamentos */}
+            <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              {confirmedBookings.map((booking) => (
+                <BookingItems key={booking.id} booking={booking} />
+              ))}
+            </div>
+          </>
+        )}
         {/* Agendamentos */}
-        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {confirmedBookings.map((booking) => (
-            <BookingItems key={booking.id} booking={booking} />
-          ))}
-        </div>
+
         <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
           Recomendados
         </h2>
