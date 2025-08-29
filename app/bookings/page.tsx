@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BookingItems from "@/_components/ui/booking-itens"
 import Header from "@/_components/ui/header"
+import { getConcludedBookings } from "@/_data/get_concluded_bookings"
+import getConfirmedBookings from "@/_data/get_confirmed_bookings"
 import { authOptions } from "@/_lib/auth"
-import { db } from "@/_lib/prisma"
 import { getServerSession } from "next-auth"
 import { notFound } from "next/navigation"
 
@@ -11,40 +12,8 @@ const Bookings = async () => {
   if (!session) {
     return notFound()
   }
-  const confirmedBookings = await db.booking.findMany({
-    where: {
-      userId: (session.user as any).id,
-      date: {
-        gte: new Date(),
-      },
-    },
-    include: {
-      service: {
-        include: {
-          barbershop: true,
-        },
-      },
-    },
-    orderBy: {
-      date: "asc",
-    },
-  })
-
-  const concludedBookings = await db.booking.findMany({
-    where: {
-      userId: (session.user as any).id,
-      date: {
-        lt: new Date(),
-      },
-    },
-    include: {
-      service: {
-        include: {
-          barbershop: true,
-        },
-      },
-    },
-  })
+  const confirmedBookings = await getConfirmedBookings()
+  const concludedBookings = await getConcludedBookings()
 
   return (
     <>
